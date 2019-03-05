@@ -59,6 +59,16 @@ class Compressor(context: Context) {
     }
 
     @Throws(IOException::class)
+    private fun compressToFile(imageFileList: ArrayList<File>):ArrayList<File>{
+        val compressArrayList = ArrayList<File>()
+        for (imageFile in imageFileList) {
+            val compressed = ImageUtil.compressImage(imageFile, maxWidth, maxHeight, compressFormat, quality, destinationDirectoryPath + File.separator + imageFile.name)
+            compressArrayList.add(compressed)
+        }
+        return compressArrayList
+    }
+
+    @Throws(IOException::class)
     private fun compressToBitmap(imageFile: File): Bitmap? {
         return ImageUtil.decodeSampledBitmapFromFile(imageFile, maxWidth, maxHeight)
     }
@@ -67,12 +77,26 @@ class Compressor(context: Context) {
         return compressToFileAsFlowable(imageFile, imageFile.name)
     }
 
+    fun compressToFileAsFlowable(imageFileList:ArrayList<File>):Flowable<ArrayList<File>>{
+        return compressToFileAsFlowableList(imageFileList)
+    }
+
     private fun compressToFileAsFlowable(imageFile: File, compressedFileName: String): Flowable<File> {
         return Flowable.defer(Callable {
             try {
                 return@Callable Flowable.just(compressToFile(imageFile, compressedFileName))
             } catch (e: IOException) {
                 return@Callable Flowable.error<File>(e)
+            }
+        })
+    }
+
+    private fun compressToFileAsFlowableList(imageFileList: ArrayList<File>):Flowable<ArrayList<File>>{
+        return Flowable.defer(Callable {
+            try {
+                return@Callable Flowable.just(compressToFile(imageFileList))
+            }catch (e:IOException){
+                return@Callable Flowable.error<ArrayList<File>>(e)
             }
         })
     }
