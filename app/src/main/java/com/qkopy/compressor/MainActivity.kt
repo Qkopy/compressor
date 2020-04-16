@@ -1,10 +1,11 @@
 package com.qkopy.compressor
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.qkopy.imagecompressor.Compressor
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         clearImage()
+
     }
 
     fun chooseImage(view: View) {
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
+    @SuppressLint("CheckResult")
     fun compressImage(view: View) {
         if (actualImage == null) {
             toast("Please choose an image!")

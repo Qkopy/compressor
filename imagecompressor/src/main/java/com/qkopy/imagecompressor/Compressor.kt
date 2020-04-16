@@ -62,7 +62,8 @@ class Compressor(context: Context) {
     private fun compressToFile(imageFileList: ArrayList<File>):ArrayList<File>{
         val compressArrayList = ArrayList<File>()
         for (imageFile in imageFileList) {
-            val compressed = ImageUtil.compressImage(imageFile, maxWidth, maxHeight, compressFormat, quality, destinationDirectoryPath + File.separator + imageFile.name)
+            val compressed = ImageUtil.compressImage(imageFile, maxWidth, maxHeight, compressFormat, quality,
+                destinationDirectoryPath + File.separator + imageFile.name)
             compressArrayList.add(compressed)
         }
         return compressArrayList
