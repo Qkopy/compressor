@@ -5,6 +5,7 @@ import androidx.exifinterface.media.ExifInterface
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import kotlin.coroutines.coroutineContext
 
 internal object ImageUtil {
 
@@ -22,6 +23,8 @@ internal object ImageUtil {
         if (!file.exists()) {
             file.mkdirs()
         }
+
+
         try {
             fileOutputStream = FileOutputStream(destinationPath)
             // write the compressed bitmap at the destination specified by destinationPath.
@@ -45,6 +48,7 @@ internal object ImageUtil {
         // First decode with inJustDecodeBounds=true to check dimensions
 
         var scaledBitmap: Bitmap? = null
+
 
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
@@ -107,7 +111,7 @@ internal object ImageUtil {
         scaleMatrix.setScale(ratioX, ratioY, middleX, middleY)
 
         val canvas = Canvas(scaledBitmap!!)
-        canvas.matrix = scaleMatrix
+        canvas.setMatrix(scaleMatrix)
         canvas.drawBitmap(
             bmp!!, middleX - bmp.width / 2,
             middleY - bmp.height / 2, Paint(Paint.FILTER_BITMAP_FLAG)

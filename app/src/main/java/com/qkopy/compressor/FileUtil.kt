@@ -13,6 +13,7 @@ internal object FileUtil {
     @Throws(IOException::class)
     fun from(context: Context, uri: Uri): File {
         val inputStream = context.contentResolver.openInputStream(uri)
+
         val fileName = getFileName(context, uri)
         val splitName =
             splitFileName(fileName)
